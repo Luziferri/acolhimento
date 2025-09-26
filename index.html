@@ -1,14 +1,425 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Caça ao Tesouro</title>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caça ao Tesouro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ===== Reset básico ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ===== Variáveis CSS ===== */
+        :root {
+            --primary-color: #ff6f61;
+            --primary-dark: #ff4c3b;
+            --secondary-color: #6a5af9;
+            --accent-color: #ffd166;
+            --dark-color: #1a1a2e;
+            --light-color: #000000;
+            --text-color: #333;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s ease;
+        }
+
+        /* ===== Body ===== */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ffd6d6, #ffe3b3);
+            color: var(--light-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ===== Efeito de partículas ===== */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        /* ===== Container principal ===== */
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            box-shadow: var(--shadow);
+            padding: 40px;
+            margin: 20px 0;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            z-index: -1;
+        }
+
+        /* ===== Cabeçalhos ===== */
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            background: linear-gradient(to right, var(--accent-color), var(--primary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            animation: titleGlow 3s infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            0% {
+                text-shadow: 0 5px 15px rgba(255, 209, 102, 0.4);
+            }
+            100% {
+                text-shadow: 0 5px 25px rgba(255, 111, 97, 0.6);
+            }
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            color: var(--light-color);
+            opacity: 0.9;
+        }
+
+        /* ===== Ilustração ===== */
+        .treasure-illustration {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 30px;
+            position: relative;
+            animation: bounce 2s infinite alternate;
+        }
+
+        .treasure-chest {
+            width: 150px;
+            height: 80px;
+            background: linear-gradient(to bottom, #d4af37, #b8860b);
+            border-radius: 10px 10px 5px 5px;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .treasure-lid {
+            width: 160px;
+            height: 20px;
+            background: linear-gradient(to bottom, #ffd700, #d4af37);
+            border-radius: 10px 10px 0 0;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .treasure-lock {
+            width: 20px;
+            height: 20px;
+            background: #333;
+            border-radius: 50%;
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #fff;
+            border-radius: 50%;
+            animation: sparkle 2s infinite;
+        }
+
+        .sparkle:nth-child(1) { top: 30px; left: 40px; animation-delay: 0s; }
+        .sparkle:nth-child(2) { top: 20px; left: 100px; animation-delay: 0.5s; }
+        .sparkle:nth-child(3) { top: 50px; left: 120px; animation-delay: 1s; }
+        .sparkle:nth-child(4) { top: 70px; left: 60px; animation-delay: 1.5s; }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-20px); }
+        }
+
+        /* ===== Descrição ===== */
+        .description {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.8;
+            opacity: 0.9;
+        }
+
+        /* ===== Botão ===== */
+        .btn-start {
+            display: inline-block;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 18px 45px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-start::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+            z-index: -1;
+        }
+
+        .btn-start:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-start:hover::before {
+            left: 100%;
+        }
+
+        .btn-start:active {
+            transform: translateY(0);
+        }
+
+        /* ===== Instruções ===== */
+        .instructions {
+            margin-top: 40px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .instructions h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--accent-color);
+        }
+
+        .instructions ul {
+            text-align: left;
+            list-style-type: none;
+        }
+
+        .instructions li {
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .instructions li::before {
+            content: '➤';
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+        }
+
+        /* ===== Footer ===== */
+        footer {
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+        }
+
+        /* ===== Responsividade ===== */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .container {
+                padding: 30px 20px;
+            }
+            
+            .btn-start {
+                padding: 15px 35px;
+                font-size: 1.1rem;
+            }
+            
+            .treasure-illustration {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .treasure-chest {
+                width: 120px;
+                height: 60px;
+            }
+            
+            .treasure-lid {
+                width: 130px;
+                height: 15px;
+            }
+        }
+    </style>
 </head>
 <body>
-<h1>Bem-vindo à Caça ao Tesouro!</h1>
-<p>Pronto para começar a aventura?</p>
-<a href="pista1.html"><button>Começar a Aventura</button></a>
+    <!-- Efeito de partículas -->
+    <div class="particles" id="particles"></div>
+    
+    <div class="container">
+        <h1>Caça ao Tesouro</h1>
+        <p class="subtitle">Uma aventura emocionante à sua espera!</p>
+        
+        <div class="treasure-illustration">
+            <div class="treasure-chest">
+                <div class="treasure-lid">
+                    <div class="treasure-lock"></div>
+                </div>
+            </div>
+            <div class="sparkle"></div>
+            <div class="sparkle"></div>
+            <div class="sparkle"></div>
+            <div class="sparkle"></div>
+        </div>
+        
+        <p class="description">
+            Prepara-te para uma jornada repleta de mistérios, enigmas e desafios. 
+           resolve os enigmas para descobrir o tesouro escondido.
+        </p>
+        
+        <a href="pista1.html" class="btn-start">Começar a Aventura</a>
+        
+        <div class="instructions">
+            <h2>Como funciona:</h2>
+            <ul>
+                <li>Resolva os enigmas para descobrir o próximo local</li>
+                <li>Use o scanner de QR code para avançar para a próxima pista</li>
+                <li>Segue todas as pistas até encontrar o tesouro final</li>
+                <li>Diverte-te  e boa sorte na tua aventura!</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Criar partículas animadas
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Tamanho aleatório
+                const size = Math.random() * 5 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Posição aleatória
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                // Atraso aleatório na animação
+                particle.style.animationDelay = `${Math.random() * 15}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // Inicializar quando a página carregar
+        window.addEventListener('load', createParticles);
+        
+        // Efeito de digitação no título (opcional)
+        document.addEventListener('DOMContentLoaded', function() {
+            const title = document.querySelector('h1');
+            const originalText = title.textContent;
+            title.textContent = '';
+            
+            let i = 0;
+            const typeWriter = () => {
+                if (i < originalText.length) {
+                    title.textContent += originalText.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 100);
+                }
+            };
+            
+            // Iniciar efeito de digitação após um breve delay
+            setTimeout(typeWriter, 500);
+        });
+    </script>
 </body>
 </html>
