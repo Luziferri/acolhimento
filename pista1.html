@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pista 1</title>
+<script src="https://unpkg.com/html5-qrcode"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>Pista 1</h1>
+<p>Não é oceanário mas também tem aquários,<br>
+aqui vivem livros, saberes e comentários.<br>
+Se fores aplicado, vais por lá estudar,<br>
+se não fores… antes dos testes vais lá procurar salvação no ar.</p>
+
+<!-- Input para digitar o local -->
+<p id="instrucao">Escreve o nome do local para desbloquear o scanner:</p>
+<input type="text" id="resposta" placeholder="Nome do local" />
+<button id="verificar">Verificar</button>
+
+<!-- Scanner QR code escondido inicialmente -->
+<div id="reader" style="display:none;"></div>
+
+<script>
+const respostaCorreta = "biblioteca"; // Nome correto em minúsculas
+const verificarBtn = document.getElementById("verificar");
+const readerDiv = document.getElementById("reader");
+const inputResposta = document.getElementById("resposta");
+const instrucao = document.getElementById("instrucao");
+
+verificarBtn.addEventListener("click", () => {
+    const respostaUsuario = inputResposta.value.toLowerCase().trim();
+    if (respostaUsuario === respostaCorreta) {
+        alert("Resposta correta! Agora você pode escanear o QR code.");
+
+        // Esconder input, botão e instrução
+        inputResposta.style.display = "none";
+        verificarBtn.style.display = "none";
+        instrucao.style.display = "none";
+
+        // Mostrar scanner
+        readerDiv.style.display = "block";
+
+        // Inicializa o scanner
+        const html5QrcodeScanner = new Html5QrcodeScanner(
+            "reader", { fps: 10, qrbox: 250 });
+        html5QrcodeScanner.render((decodedText, decodedResult) => {
+            window.location.href = decodedText; // Redireciona para a URL do QR code
+        });
+    } else {
+        alert("Resposta incorreta! Tente novamente.");
+    }
+});
+</script>
+</body>
+</html>
