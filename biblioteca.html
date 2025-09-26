@@ -1,0 +1,22 @@
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Biblioteca</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://unpkg.com/html5-qrcode"></script>
+</head>
+<body>
+<div class="container">
+<h1>Biblioteca</h1>
+<p>“Não é oceanário mas também tem aquários,<br> aqui vivem livros, saberes e comentários.<br> Se fores aplicado, vais por lá estudar,<br> se não fores… antes dos testes vais lá procurar salvação no ar.”</p>
+<p>Escaneie o QR code do Bar para continuar:</p>
+<div id="reader" style="width:300px; margin:auto;"></div>
+</div>
+<script>
+function onScanSuccess(decodedText) { window.location.href = decodedText; }
+function onScanError(errorMessage) { console.warn(errorMessage); }
+new Html5QrcodeScanner("reader", {fps:10, qrbox:250}).render(onScanSuccess, onScanError);
+</script>
+</body>
+</html>

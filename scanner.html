@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scanner de QR Code</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/html5-qrcode"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>Scanner de QR Code</h1>
+    <div id="reader" style="width:300px; margin:auto;"></div>
+    <p>Apontar a câmera para o QR code do ponto.</p>
+  </div>
+
+  <script>
+    function onScanSuccess(decodedText, decodedResult) {
+      // Redireciona automaticamente para a URL do QR code
+      window.location.href = decodedText;
+    }
+
+    function onScanError(errorMessage) {
+      // Erros são ignorados para não interromper o scan
+      console.warn(errorMessage);
+    }
+
+    let html5QrcodeScanner = new Html5QrcodeScanner(
+      "reader", { fps: 10, qrbox: 250 });
+    html5QrcodeScanner.render(onScanSuccess, onScanError);
+  </script>
+</body>
+</html>
