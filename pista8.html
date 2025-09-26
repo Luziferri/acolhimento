@@ -1,15 +1,82 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-pt">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pista 1</title>
-<script src="https://unpkg.com/html5-qrcode"></script>
+<title>Fim da Aventura</title>
 <link rel="stylesheet" href="style.css">
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #ffecd2, #fcb69f);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+}
+
+h1 {
+    font-size: 3rem;
+    color: #ff6f61;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+    animation: pop 1s ease forwards;
+}
+
+p {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 40px;
+    animation: fadeIn 2s ease forwards;
+}
+
+@keyframes pop {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Botão para recomeçar */
+button {
+    padding: 12px 24px;
+    font-size: 1rem;
+    background: #ff6f61;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+button:hover {
+    background: #ff3b2e;
+}
+</style>
 </head>
 <body>
-    <h1>Acabou</h1>
-    <p>Chegaste ao fim parabéns !!!!</p>
-       <!-- Input para digitar o local -->
+    <h1>🎉 Parabéns! 🎉</h1>
+    <p>Chegaste ao fim da aventura! 🏆</p>
+    <button onclick="window.location.href='index.html'">Recomeçar</button>
+
+    <!-- Script para confetes -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script>
+        // Solta confete automaticamente ao carregar
+        setTimeout(() => {
+            confetti({
+                particleCount: 200,
+                spread: 120,
+                origin: { y: 0.6 }
+            });
+        }, 500);
+    </script>
 </body>
 </html>
