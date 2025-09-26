@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel do Mestre - Caça ao Tesouro</title>
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+<link rel="stylesheet" href="style.css">
+<style>
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(to right, #ffe3b3, #ffd6d6);
+    padding: 40px 20px;
+    text-align: center;
+}
+h1 {
+    color: #ff6f61;
+    margin-bottom: 30px;
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.2);
+}
+input[type="text"] {
+    padding: 10px 15px;
+    width: 300px;
+    border-radius: 8px;
+    border: 2px solid #ff6f61;
+    margin-bottom: 10px;
+    font-size: 1rem;
+}
+button {
+    padding: 10px 20px;
+    margin-left: 5px;
+    background-color: #ff6f61;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+button:hover {
+    background-color: #ff4c3b;
+}
+.qr-card {
+    display: inline-block;
+    margin: 20px;
+    padding: 15px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0px 5px 15px rgba(0,0,0,0.2);
+    text-align: center;
+}
+</style>
+</head>
+<body>
+
+<h1>Painel do Mestre - Gerador de QR Codes</h1>
+
+<input type="text" id="urlInput" placeholder="Digite a URL da próxima pista" />
+<button id="gerarBtn">Gerar QR Code</button>
+
+<div id="qrContainer"></div>
+
+<script>
+const gerarBtn = document.getElementById("gerarBtn");
+const qrContainer = document.getElementById("qrContainer");
+const urlInput = document.getElementById("urlInput");
+
+gerarBtn.addEventListener("click", () => {
+    const url = urlInput.value.trim();
+    if (!url) {
+        alert("Digite uma URL para gerar o QR code!");
+        return;
+    }
+
+    // Cria card para o QR code
+    const card = document.createElement("div");
+    card.classList.add("qr-card");
+
+    const title = document.createElement("p");
+    title.textContent = url;
+    title.style.fontWeight = "bold";
+
+    const canvas = document.createElement("canvas");
+
+    // Botão para baixar QR code
+    const downloadBtn = document.createElement("button");
+    downloadBtn.textContent = "Baixar QR Code";
+
+    QRCode.toCanvas(canvas, url, { width: 200 }, function (error) {
+        if (error) {
+            alert("Erro ao gerar QR code!");
+            console.error(error);
+        } else {
+            // Ao clicar, baixa a imagem
+            downloadBtn.addEventListener("click", () => {
+                const link = document.createElement("a");
+                link.href = canvas.toDataURL("image/png");
+                link.download = "qrcode.png";
+                link.click();
+            });
+            card.appendChild(title);
+            card.appendChild(canvas);
+            card.appendChild(downloadBtn);
+            qrContainer.appendChild(card);
+        }
+    });
+
+    // Limpa input
+    urlInput.value = "";
+});
+</script>
+
+</body>
+</html>
