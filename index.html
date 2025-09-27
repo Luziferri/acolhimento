@@ -360,7 +360,15 @@
            resolve os enigmas para descobrir o tesouro escondido.
         </p>
         
-        <a href="pista1.html" class="btn-start">Começar a Aventura</a>
+        <a href="pista1.html" class="btn-start" onclick="iniciarTimer()">Começar a Aventura</a>
+
+        <script>
+        function iniciarTimer() {
+            // Guardar o timestamp atual em milissegundos
+            sessionStorage.setItem('startTime', Date.now());
+        }
+        </script>
+        
         
         <div class="instructions">
             <h2>Como funciona:</h2>

@@ -64,6 +64,25 @@ button:hover {
 <body>
     <h1>🎉 Parabéns! 🎉</h1>
     <p>Chegaste ao fim da aventura! 🏆</p>
+    <p id="tempoFinal"></p>
+
+<script>
+window.addEventListener('load', () => {
+    const startTime = sessionStorage.getItem('startTime');
+    if (!startTime) return;
+
+    const diff = Date.now() - startTime;
+    const horas = Math.floor(diff / 3600000);
+    const minutos = Math.floor((diff % 3600000) / 60000);
+    const segundos = Math.floor((diff % 60000) / 1000);
+
+    document.getElementById('tempoFinal').textContent =`Tempo total da aventura: ${String(horas).padStart(2,'0')}:${String(minutos).padStart(2,'0')}:${String(segundos).padStart(2,'0')}`;
+
+    // Opcional: limpar o timer da sessão
+    sessionStorage.removeItem('startTime');
+});
+</script>
+
     <button onclick="window.location.href='index.html'">Recomeçar</button>
 
     <!-- Script para confetes -->
