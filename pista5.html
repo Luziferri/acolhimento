@@ -70,6 +70,26 @@
 
     <footer>
         Caça ao Tesouro - Pista 5
+        <div class="timer">Tempo: <span id="timerDisplay">00:00:00</span></div>
+
+<script>
+function atualizarTimer() {
+    const startTime = sessionStorage.getItem('startTime');
+    if (!startTime) return; // Não iniciou ainda
+
+    const diff = Date.now() - startTime;
+    const horas = Math.floor(diff / 3600000);
+    const minutos = Math.floor((diff % 3600000) / 60000);
+    const segundos = Math.floor((diff % 60000) / 1000);
+
+    document.getElementById('timerDisplay').textContent =
+        `${String(horas).padStart(2,'0')}:${String(minutos).padStart(2,'0')}:${String(segundos).padStart(2,'0')}`;
+}
+
+// Atualiza a cada segundo
+setInterval(atualizarTimer, 1000);
+</script>
+
     </footer>
 
     <script>
